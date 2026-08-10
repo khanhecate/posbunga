@@ -262,7 +262,44 @@ Sebelum menjalankan aplikasi, pastikan sistem Anda memiliki:
 
 ## Installation
 
-### Opsi 1: Menggunakan Docker (Recommended)
+### Setup Manual (Recommended)
+
+```bash
+# 1. Clone repository
+git clone https://github.com/khanhecate/posbunga.git
+cd posbunga
+
+# 2. Setup web server
+# Copy folder 'html/' ke document root Apache Anda (misal: /var/www/html/ atau C:\xampp\htdocs\)
+# Atau buat virtual host yang mengarah ke folder 'html/'
+
+# 3. Pastikan Apache mod_rewrite enabled
+# Ubuntu/Debian: sudo a2enmod rewrite && sudo systemctl restart apache2
+# Windows XAMPP: Biasanya sudah enabled
+
+# 4. Create database dan user
+mysql -u root -p
+CREATE DATABASE posbunga CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER 'posbunga'@'localhost' IDENTIFIED BY 'posbunga123';
+GRANT ALL PRIVILEGES ON posbunga.* TO 'posbunga'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+
+# 5. Import database schema dan data
+mysql -u posbunga -pposbunga123 posbunga < database.sql
+
+# 6. Set permissions untuk upload folder (Linux/Mac)
+chmod 755 html/be/assets/produk/
+chmod 644 html/be/assets/produk/*
+
+# 7. Akses aplikasi
+# Customer:  http://localhost/posbunga/html/fe/  (atau sesuai virtual host)
+# Admin:     http://localhost/posbunga/html/be/admin/
+```
+
+### Setup dengan Docker (Alternatif)
+
+Jika Anda lebih suka menggunakan Docker:
 
 ```bash
 # 1. Clone repository
@@ -279,32 +316,6 @@ docker exec -i posbunga-db mariadb -u posbunga -pposbunga123 posbunga < database
 # Customer:  http://localhost:8080/fe/
 # Admin:     http://localhost:8080/be/admin/
 # phpMyAdmin: http://localhost:8081
-```
-
-### Opsi 2: Manual Setup
-
-```bash
-# 1. Clone repository
-git clone https://github.com/khanhecate/posbunga.git
-cd posbunga
-
-# 2. Setup web server
-# Copy folder 'html/' ke document root Apache Anda
-# Atau setup virtual host yang mengarah ke folder 'html/'
-
-# 3. Create database
-mysql -u root -p
-CREATE DATABASE posbunga CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-CREATE USER 'posbunga'@'localhost' IDENTIFIED BY 'posbunga123';
-GRANT ALL PRIVILEGES ON posbunga.* TO 'posbunga'@'localhost';
-FLUSH PRIVILEGES;
-EXIT;
-
-# 4. Import database
-mysql -u posbunga -pposbunga123 posbunga < database.sql
-
-# 5. Update database config (jika perlu)
-# Edit html/be/config/database.php sesuai setting database Anda
 ```
 
 ## Configuration
