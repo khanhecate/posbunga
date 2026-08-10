@@ -1,0 +1,17 @@
+=============================================
+DAFTAR USER - POS TOKO BUNGA
+=============================================
+
+ADMIN:
+  Username : sandal
+  Password : sandal
+  Role     : admin
+  Akses    : Panel admin (/be/admin/)
+
+USER (Customer):
+  Username : user
+  Password : user
+  Role     : kasir
+  Akses    : Halaman customer + checkout
+
+=============================================

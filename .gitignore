@@ -1,0 +1,59 @@
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Database dumps (keep main database.sql for seed data)
+*.sql.gz
+backup_*.sql
+dump_*.sql
+
+# PHP
+vendor/
+*.log
+.env
+.env.local
+.env.production
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Uploads (keep sample images for demo)
+html/be/assets/produk/uploads/
+!html/be/assets/produk/.gitkeep
+
+# Cache & Sessions
+html/tmp/
+html/cache/
+*.cache
+
+# Logs
+*.log
+logs/
+error_log
+
+# Composer
+composer.phar
+composer.lock
+
+# Node.js (if used for build tools)
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Backup files
+*.bak
+*.backup
+*~
+
+# Local development
+.local/
+local.txt

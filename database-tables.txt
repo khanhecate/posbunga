@@ -1,0 +1,132 @@
+DATABASE: posbunga
+===================================
+
+TABEL YANG AKAN DIBUAT:
+===================================
+
+1. users
+   - id (INT, PK, AUTO_INCREMENT)
+   - username (VARCHAR 50, UNIQUE)
+   - password (VARCHAR 255)
+   - nama_lengkap (VARCHAR 100)
+   - role (ENUM: admin, kasir)
+   - no_telp (VARCHAR 20, NULL)
+   - is_active (TINYINT, DEFAULT 1)
+   - created_at (TIMESTAMP)
+   - updated_at (TIMESTAMP)
+
+2. kategori_produk
+   - id (INT, PK, AUTO_INCREMENT)
+   - nama_kategori (VARCHAR 50, UNIQUE)
+   - deskripsi (TEXT, NULL)
+   - created_at (TIMESTAMP)
+
+3. produk
+   - id (INT, PK, AUTO_INCREMENT)
+   - kode_bunga (VARCHAR 20, UNIQUE)
+   - nama_bunga (VARCHAR 100)
+   - kategori_id (INT, FK -> kategori_produk.id)
+   - harga_beli (DECIMAL 12,2)
+   - harga_jual (DECIMAL 12,2)
+   - stok (INT, DEFAULT 0)
+   - foto (VARCHAR 255, NULL)
+   - deskripsi (TEXT, NULL)
+   - is_active (TINYINT, DEFAULT 1)
+   - created_at (TIMESTAMP)
+   - updated_at (TIMESTAMP)
+
+4. pelanggan
+   - id (INT, PK, AUTO_INCREMENT)
+   - nama (VARCHAR 100)
+   - no_telp (VARCHAR 20, NULL)
+   - email (VARCHAR 100, NULL)
+   - alamat (TEXT, NULL)
+   - catatan (TEXT, NULL)
+   - created_at (TIMESTAMP)
+   - updated_at (TIMESTAMP)
+
+5. supplier
+   - id (INT, PK, AUTO_INCREMENT)
+   - nama (VARCHAR 100)
+   - no_telp (VARCHAR 20, NULL)
+   - email (VARCHAR 100, NULL)
+   - alamat (TEXT, NULL)
+   - kontak_person (VARCHAR 100, NULL)
+   - created_at (TIMESTAMP)
+   - updated_at (TIMESTAMP)
+
+6. transaksi
+   - id (INT, PK, AUTO_INCREMENT)
+   - no_transaksi (VARCHAR 30, UNIQUE)
+   - tanggal (TIMESTAMP)
+   - pelanggan_id (INT, FK -> pelanggan.id, NULL)
+   - user_id (INT, FK -> users.id)
+   - subtotal (DECIMAL 12,2)
+   - diskon (DECIMAL 12,2, DEFAULT 0)
+   - total (DECIMAL 12,2)
+   - metode_bayar (ENUM: cash, qris, transfer, creditcard)
+   - jumlah_bayar (DECIMAL 12,2)
+   - kembalian (DECIMAL 12,2)
+   - catatan (TEXT, NULL)
+   - status (ENUM: pending, paid, packing, shipping, delivered, done, batal)
+   - nama_penerima (VARCHAR 100, NULL)
+   - telp_penerima (VARCHAR 20, NULL)
+   - alamat_pengiriman (TEXT, NULL)
+   - payment_ref (VARCHAR 100, NULL)
+   - created_at (TIMESTAMP)
+   - updated_at (TIMESTAMP)
+
+7. detail_transaksi
+   - id (INT, PK, AUTO_INCREMENT)
+   - transaksi_id (INT, FK -> transaksi.id)
+   - produk_id (INT, FK -> produk.id)
+   - nama_produk (VARCHAR 100)
+   - harga_jual (DECIMAL 12,2)
+   - qty (INT)
+   - diskon_item (DECIMAL 12,2, DEFAULT 0)
+   - subtotal (DECIMAL 12,2)
+
+8. pembelian_stok
+   - id (INT, PK, AUTO_INCREMENT)
+   - no_pembelian (VARCHAR 30, UNIQUE)
+   - tanggal (TIMESTAMP)
+   - supplier_id (INT, FK -> supplier.id)
+   - user_id (INT, FK -> users.id)
+   - total (DECIMAL 12,2)
+   - catatan (TEXT, NULL)
+   - created_at (TIMESTAMP)
+
+9. detail_pembelian_stok
+   - id (INT, PK, AUTO_INCREMENT)
+   - pembelian_id (INT, FK -> pembelian_stok.id)
+   - produk_id (INT, FK -> produk.id)
+   - qty (INT)
+   - harga_beli (DECIMAL 12,2)
+   - subtotal (DECIMAL 12,2)
+
+10. pengaturan
+    - id (INT, PK, AUTO_INCREMENT)
+    - setting_key (VARCHAR 50, UNIQUE)
+    - setting_value (TEXT)
+    - updated_at (TIMESTAMP)
+
+
+RELASI:
+===================================
+- produk.kategori_id        -> kategori_produk.id
+- transaksi.pelanggan_id    -> pelanggan.id (nullable, untuk walk-in)
+- transaksi.user_id         -> users.id
+- detail_transaksi.transaksi_id -> transaksi.id
+- detail_transaksi.produk_id    -> produk.id
+- pembelian_stok.supplier_id    -> supplier.id
+- pembelian_stok.user_id        -> users.id
+- detail_pembelian_stok.pembelian_id -> pembelian_stok.id
+- detail_pembelian_stok.produk_id    -> produk.id
+
+
+DATA AWAL (SEED):
+===================================
+- 1 user admin (username: admin, password: admin123)
+- Kategori: Mawar, Lily, Tulip, Buket, Anggrek, Aksesoris
+- Beberapa produk contoh
+- Pengaturan: nama_toko, alamat_toko, no_telp_toko, pajak_persen
